@@ -6,10 +6,16 @@
     "prestart": "babel-node tools/startMessage.js",
     "start": "npm-run-all --parallel test:watch open:src lint:watch",
     "open:src": "babel-node tools/srcServer.js",
-    "lint": "esw webpack.config.* src tools",
+    "lint": "node_modules/.bin/esw webpack.config.* src tools",
     "lint:watch": "npm run lint -- --watch",
     "test": "mocha --reporter progress tools/testSetup.js \"src/**/*.test.js\"",
-    "test:watch": "npm run test -- --watch"
+    "test:watch": "npm run test -- --watch",
+    "clean-dist": "npm run remove-dist && mkdir dist",
+    "remove-dist": "node_modules/.bin/rimraf ./dist",
+    "build:html": "babel-node tools/buildHtml.js",
+    "prebuild": "npm-run-all clean-dist test lint build:html",
+    "build": "babel-node tools/build.js",
+    "postbuild": "babel-node tools/distServer.js"
   },
   "dependencies": {
     "babel-polyfill": "6.13.0",
@@ -33,6 +39,7 @@
     "babel-preset-react": "6.11.1",
     "babel-preset-react-hmre": "1.1.1",
     "babel-register": "6.11.6",
+    "cheerio": "0.20.0",
     "colors": "1.1.2",
     "compression": "1.6.2",
     "cross-env": "2.0.0",
@@ -71,6 +78,5 @@
   "bugs": {
     "url": "https://github.com/mathurkunal/react-redux-starter-kit/issues"
   },
-  "homepage": "https://github.com/mathurkunal/react-redux-starter-kit#readme",
-  "main": "webpack.config.dev.js"
+  "homepage": "https://github.com/mathurkunal/react-redux-starter-kit#readme"
 }
